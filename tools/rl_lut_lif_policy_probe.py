@@ -177,6 +177,12 @@ def build_report(metrics: Mapping[str, object]) -> str:
     gate = metrics["gate"]
     final = metrics["final"]
     controls = metrics["controls"]
+    search_controls = metrics["search_controls"]
+    search_controls_table = "\n".join(
+        f"| {row['tag']} | {row['candidate_top1']:.4f} | {row['drop_top1']:.4f} | "
+        f"{row['logit_mse_per_sample']:.6f} | {row['reward']:.6f} |"
+        for row in search_controls
+    )
     controls_table = "\n".join(
         f"| {row['tag']} | {row['candidate_top1']:.4f} | {row['drop_top1']:.4f} | "
         f"{row['logit_mse_per_sample']:.6f} | {row['reward']:.6f} |"
@@ -193,7 +199,16 @@ Status: **{gate['verdict']}**
 - Actions per group: `posthoc`, `quant`, `cnl`
 - Fixed coordinate-bandit budget: {metrics['protocol']['policy_rounds']} round(s), no seed/checkpoint/bit-width search
 
-## Matched Fixed-Policy Controls
+## Search-Subset Fixed-Policy Controls
+
+These rows use the same subset as the policy search and are not used for the
+formal full-validation gate.
+
+| Policy | Acc@1 | Drop | Logit MSE/sample | Reward |
+|---|---:|---:|---:|---:|
+{search_controls_table}
+
+## Full-Evaluation Fixed-Policy Controls
 
 | Policy | Acc@1 | Drop | Logit MSE/sample | Reward |
 |---|---:|---:|---:|---:|
@@ -253,10 +268,10 @@ def run(args) -> Dict[str, object]:
         batches=args.calib_batches,
     )
 
-    controls = []
+    search_controls = []
     for action in ACTIONS:
         policy = {group: action for group in group_names}
-        controls.append(
+        search_controls.append(
             evaluate_policy(
                 root=root,
                 args=args,
@@ -324,6 +339,25 @@ def run(args) -> Dict[str, object]:
         max_batches=args.final_eval_batches,
         logit_weight=args.logit_reward_weight,
     )
+    controls = []
+    for action in ACTIONS:
+        policy = {group: action for group in group_names}
+        controls.append(
+            evaluate_policy(
+                root=root,
+                args=args,
+                clean=clean,
+                loader=val_loader,
+                device=device,
+                ranges=ranges,
+                moments=moments,
+                groups=groups,
+                policy=policy,
+                tag=f"full_all_{action}",
+                max_batches=args.final_eval_batches,
+                logit_weight=args.logit_reward_weight,
+            )
+        )
     best_control = max(controls, key=lambda item: float(item["reward"]))
     beats_control = float(final["reward"]) > float(best_control["reward"])
     drop_within = float(final["drop_top1"]) <= float(args.max_drop)
@@ -341,7 +375,7 @@ def run(args) -> Dict[str, object]:
         for name in sorted(groups)
     ]
     summary_rows = []
-    for row in [*controls, final]:
+    for row in [*search_controls, *controls, final]:
         summary_rows.append(
             {
                 "tag": row["tag"],
@@ -375,6 +409,7 @@ def run(args) -> Dict[str, object]:
             "range_adjustments": range_adjustments,
         },
         "groups": groups,
+        "search_controls": search_controls,
         "controls": controls,
         "search_rows": search_rows,
         "final_policy": current_policy,
