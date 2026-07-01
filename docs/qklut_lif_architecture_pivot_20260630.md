@@ -2,10 +2,10 @@
 
 Date: 2026-07-01
 
-Status: pivot under evaluation. The RL selector and dense trainable CNL table
-routes are completed `NO-GO` results. The active architecture gate is the
-registered structured residual CNL-LUT-LIF probe; no new positive architecture
-result is claimed here.
+Status: pivot under evaluation, with three completed `NO-GO` architecture
+probes. The RL selector, dense trainable CNL table, and structured residual
+CNL-LUT-LIF routes all fail their registered full-validation gates. No positive
+new QK-LUT-LIF architecture result is claimed here.
 
 ## New Paper Identity
 
@@ -30,7 +30,7 @@ Second-paper QK-LUT findings suggest three design principles:
 3. temporal/channel current normalization can reduce local mismatch in some
    QKFormer settings.
 
-Two cheap architecture pivots have now been tested and rejected:
+Three cheap architecture pivots have now been tested and rejected:
 
 1. **Selector policy over fixed variants.** Each LIF group chose one action:
    post-hoc transition LUT, quantized arithmetic LIF, or CNL-LUT-LIF. Result:
@@ -42,12 +42,16 @@ Two cheap architecture pivots have now been tested and rejected:
    Result: `NO-GO`; training accuracy saturated while full-validation fidelity
    degraded, consistent with dense table drift under hard-address evaluation.
    See `lut_if_paper/trainable_cnl_lut_lif_result_20260701.md`.
+3. **Structured residual CNL-LUT-LIF.** The analytic/CNL transition table was
+   frozen and only state-vector, input-vector, global residual, and threshold
+   parameters were trained. Result: `NO-GO`; final accuracy remained below the
+   fixed CNL control and logit MSE degraded sharply. See
+   `lut_if_paper/structured_residual_cnl_lut_lif_result_20260701.md`.
 
-The active hypothesis is narrower and more causal: fixed CNL-LUT-LIF may be
-useful, but the trainable part must be low-degree and structured. The current
-registered probe therefore freezes the analytic/CNL transition table and
-trains only a state-vector residual, input-vector residual, global residual,
-and threshold while preserving hard-address evaluation.
+The remaining viable hypothesis is narrower: a positive QK-LUT-LIF architecture
+will likely require native insertion and from-start or joint training, or a
+different backbone interface, rather than post-hoc frozen-backbone replacement
+with a small trainable correction.
 
 ## Experimental Order
 
@@ -56,19 +60,18 @@ and threshold while preserving hard-address evaluation.
 3. Trainable dense CNL-LUT-LIF module: modify the module or training objective
    rather than selecting among fixed replacement variants. `NO-GO`.
 4. Structured residual CNL-LUT-LIF module on QKFormer CIFAR-100 `T=4`,
-   seed 42. `PLANNED / CODE_PUSHED / SERVER_PENDING`.
+   seed 42. `NO-GO`.
 5. Cross-architecture smoke using existing Spikformer or QK-contract
-   Spikformer support only if step 4 passes or if it is explicitly framed as a
-   failure-boundary test.
+   Spikformer support only if it is explicitly framed as a failure-boundary
+   test or as a new preregistered native-training route.
 6. LL-ViT adaptation only after locating a runnable implementation and mapping
    its LUT-based channel-mixer interface to this paper's SNN/LUT-LIF setting.
 
 ## Claim Boundary
 
-Allowed after a future passing full QKFormer structured-residual run:
+Allowed only after a future positive native-training or cross-architecture run:
 
-- a structured residual LUT-LIF module can improve over fixed CNL-LUT-LIF on
-  the evaluated QKFormer setting;
+- a QK-LUT-LIF module improves a matched backbone under a registered protocol;
 - QK-LUT principles motivate the architecture design.
 
 Not allowed without additional evidence:
@@ -87,29 +90,27 @@ Current disallowed claim:
 - CNL initialization plus dense trainable transition tables is sufficient to
   rescue LUT-LIF training. The completed full run contradicts this claim; see
   `lut_if_paper/trainable_cnl_lut_lif_result_20260701.md`.
-- Structured residual CNL-LUT-LIF improves the QKFormer setting. This remains
-  a planned claim until the registered full run completes and passes.
+- Structured residual CNL-LUT-LIF improves the QKFormer setting. The completed
+  full run contradicts this claim; see
+  `lut_if_paper/structured_residual_cnl_lut_lif_result_20260701.md`.
 
 ## Updated Route Decision
 
-The evidence now rejects both cheap architecture pivots:
+The evidence now rejects three cheap architecture pivots:
 
 1. choosing among fixed replacement variants by a restricted policy;
-2. training dense CNL-initialized transition tables after freezing the backbone.
+2. training dense CNL-initialized transition tables after freezing the backbone;
+3. training a low-degree residual over a frozen CNL transition table after
+   freezing the backbone.
 
-The next architecture attempt changes the parameterization, not the selection
-rule. The structured residual module has been implemented and preregistered in
-`run_specs/structured_residual_cnl_lut_lif_qkformer_c100_t4_seed42_20260701.yaml`.
-The code is public on branch `codex/qklut-lif-rl-architecture` at commit
-`86519d9`; the standalone public extraction is updated at `d22f1c8`.
+The structured residual attempt changed the parameterization but still failed
+the registered full gate. The code is public on branch
+`codex/qklut-lif-rl-architecture` at commit `0f5c9a3`; the full-run artifacts
+are recorded under
+`results/structured_residual_cnl_lut_lif_cifar100_t4_seed42_full_20260701_124750/`.
 
-Execution is currently pending because the configured private remote server is
-not reachable from the local machine. Do not report smoke/full results until
-the registered runner executes on the server.
-
-If the structured residual gate passes, the paper can continue toward a new
-module-architecture claim. If it fails, the route should not be rescued by a
-hidden sweep; the next defensible options are either (i) from-start training
-with QK-LUT-LIF inserted into the backbone or (ii) an explicitly labeled
-cross-architecture boundary test on the existing QK-contract Spikformer
-support.
+The route should not be rescued by a hidden sweep. The next defensible options
+are either (i) from-start or joint training with QK-LUT-LIF inserted into the
+backbone, (ii) an explicitly labeled cross-architecture boundary test on
+existing QK-contract Spikformer support, or (iii) locating a runnable LL-ViT
+implementation and preregistering a protocol-matched native-module test.

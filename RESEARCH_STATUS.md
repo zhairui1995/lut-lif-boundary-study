@@ -1,7 +1,8 @@
 # Research Status
 
 Status: `CONDITIONAL_PASS_LOCAL_PACKAGE` for the original boundary-study
-package; `PLANNED_PIVOT` for the QK-LUT-LIF Transformer architecture route.
+package; `NO-GO_POSTHOC_ARCHITECTURE_PIVOT` for the tested QK-LUT-LIF
+Transformer architecture routes.
 
 The current story is coherent if framed as a boundary study rather than a broad
 positive method paper:
@@ -48,7 +49,8 @@ Remaining blockers before any public release or submission:
 - explicit upload/submission approval;
 - final live portal and official-policy freshness check.
 
-No remote-server experiment is planned or run in this extraction step.
+No checkpoint, dataset, raw launcher log, or private server detail is included
+in this public extraction.
 
 ## Architecture Pivot
 
@@ -67,6 +69,14 @@ QK-LUT-inspired CNL normalization while making the dense transition table,
 threshold, and temporal/channel affine correction trainable under a frozen
 backbone degraded full-validation performance relative to fixed CNL.
 
-Current route implication: the next architecture attempt should use a smaller
-structured residual or from-start network training, not dense post-hoc table
-training.
+The follow-up structured residual CNL-LUT-LIF run is also `NO-GO`: freezing the
+analytic/CNL transition table and training only threshold plus state-vector,
+input-vector, and global residual parameters reaches `78.86%` Acc@1, below the
+fixed CNL control at `78.98%`, with final logit MSE worsening to `89.5757`.
+All 35 targets executed, but the registered gate failed.
+
+Current route implication: the tested post-hoc frozen-backbone architecture
+pivots are exhausted as positive claims. A future architecture route should be
+preregistered as from-start or joint network training, or as a clearly labeled
+cross-architecture boundary test after locating a runnable Spikformer/LL-ViT
+protocol.

@@ -18,9 +18,9 @@ with post-boundary architecture probes.
 - `results/`: compact metrics, summary tables, and paper-facing reports.
 - `figures/`: evidence-flow figure source and rendered outputs.
 - `scripts/`: smoke/full command templates using environment variables.
-- `docs/qklut_lif_architecture_pivot_20260630.md`: planned architecture pivot
-  from boundary study to QK-LUT-LIF Transformer; no positive result is claimed
-  by this planning note.
+- `docs/qklut_lif_architecture_pivot_20260630.md`: architecture-pivot status
+  note from boundary study to QK-LUT-LIF Transformer; the tested post-hoc
+  pivot routes are `NO-GO`, so no positive result is claimed.
 - `paper/`: anonymous manuscript PDF and reproducibility checklist draft.
 
 ## Excluded
@@ -48,8 +48,9 @@ trainable dense LUT-LIF transition module initialized with CNL current
 normalization. Its compact `NO-GO` result is in
 `results/trainable_cnl_lut_lif_c100_t4_report.md`.
 
-`tools/structured_residual_cnl_lut_lif_probe.py` records the next planned
-architecture probe: a low-degree state/input/global residual over a fixed
-CNL-LUT-LIF table. It is preregistered in
+`tools/structured_residual_cnl_lut_lif_probe.py` records the structured
+residual architecture probe: a low-degree state/input/global residual over a
+fixed CNL-LUT-LIF table. It is preregistered in
 `run_specs/structured_residual_cnl_lut_lif_qkformer_c100_t4_seed42_20260701.sanitized.yaml`;
-no positive result is claimed by adding this planned probe.
+its compact `NO-GO` result is in
+`results/structured_residual_cnl_lut_lif_c100_t4_report.md`.

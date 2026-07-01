@@ -21,9 +21,8 @@ This artifact supports the paper's bounded diagnostic claims:
   matrix and does not support broad method superiority;
 - the CIFAR-100 T=1 failure is precision/state-range sensitive in the fixed
   8-bit diagnostic.
-- the RL selector and dense trainable CNL-LUT-LIF architecture probes are
-  registered negative results; the structured residual CNL-LUT-LIF probe is
-  preregistered but not yet a result in this repository.
+- the RL selector, dense trainable CNL-LUT-LIF, and structured residual
+  CNL-LUT-LIF architecture probes are registered negative results.
 
 The artifact does not claim hardware speed, energy, area, SRAM reduction,
 cross-architecture generality, seed stability beyond seed 42, or bit-width
@@ -101,6 +100,10 @@ Structured residual CNL-LUT-LIF architecture probe:
 ```bash
 RUN_MODE=smoke bash scripts/server/run_structured_residual_cnl_lut_lif_probe_template.sh
 ```
+
+The compact full-run result is recorded in
+`results/structured_residual_cnl_lut_lif_c100_t4_report.md`; the registered
+gate is `NO-GO`.
 
 ## Notes on Result Labels
 
