@@ -1,11 +1,11 @@
 # LUT Spiking-Neuron Boundary Study
 
-Date: 2026-06-29
+Date: 2026-07-01
 
-Status: standalone local repository extracted from the anonymous artifact dry
-run. This repository is not uploaded, published, pushed to GitHub, or submitted.
-It excludes datasets, checkpoints, raw launcher logs, local build sidecars,
-private paths, and unrelated repository material.
+Status: standalone public repository extracted from the anonymous artifact dry
+run and then updated with post-boundary architecture probes. It excludes
+datasets, checkpoints, raw launcher logs, local build sidecars, private paths,
+and unrelated repository material.
 
 This repository is intentionally separated from the SDR-LUT/QK-LUTFormer work.
 It contains only the code, run specifications, compact result summaries,
@@ -21,6 +21,9 @@ This artifact supports the paper's bounded diagnostic claims:
   matrix and does not support broad method superiority;
 - the CIFAR-100 T=1 failure is precision/state-range sensitive in the fixed
   8-bit diagnostic.
+- the RL selector and dense trainable CNL-LUT-LIF architecture probes are
+  registered negative results; the structured residual CNL-LUT-LIF probe is
+  preregistered but not yet a result in this repository.
 
 The artifact does not claim hardware speed, energy, area, SRAM reduction,
 cross-architecture generality, seed stability beyond seed 42, or bit-width
@@ -93,6 +96,12 @@ bash scripts/run_lut_if_poc_template.sh full_c100_t4
 These templates do not download checkpoints and do not search over seeds,
 bit-widths, learning rates, checkpoints, or validation selections.
 
+Structured residual CNL-LUT-LIF architecture probe:
+
+```bash
+RUN_MODE=smoke bash scripts/server/run_structured_residual_cnl_lut_lif_probe_template.sh
+```
+
 ## Notes on Result Labels
 
 The original tool used legacy method labels containing `6bit` in the
@@ -102,8 +111,7 @@ boundary report explains the label mismatch.
 
 ## Release Policy
 
-This dry run follows the no-checkpoint review option: provide code, run specs,
-small results, and command templates, but do not include model weights. A final
-artifact upload still requires an explicit user decision about checkpoint
-release, license, and submission/upload approval. The included access statement
-is a draft for anonymous review, not a final public license.
+This repository follows the no-checkpoint review option: provide code, run
+specs, small results, and command templates, but do not include model weights.
+The included access statement is a draft for anonymous review, not a final
+public license.

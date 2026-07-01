@@ -1,8 +1,9 @@
 # Code Manifest
 
-This repository is a standalone local extraction for the LUT spiking-neuron
+This repository is a standalone public extraction for the LUT spiking-neuron
 boundary-study paper. It was copied from the sanitized anonymous artifact dry
-run at `lut_if_paper/anonymous_artifact_dry_run_20260629`.
+run at `lut_if_paper/anonymous_artifact_dry_run_20260629` and then updated
+with post-boundary architecture probes.
 
 ## Included
 
@@ -47,4 +48,8 @@ trainable dense LUT-LIF transition module initialized with CNL current
 normalization. Its compact `NO-GO` result is in
 `results/trainable_cnl_lut_lif_c100_t4_report.md`.
 
-No GitHub remote is configured in this local repository.
+`tools/structured_residual_cnl_lut_lif_probe.py` records the next planned
+architecture probe: a low-degree state/input/global residual over a fixed
+CNL-LUT-LIF table. It is preregistered in
+`run_specs/structured_residual_cnl_lut_lif_qkformer_c100_t4_seed42_20260701.sanitized.yaml`;
+no positive result is claimed by adding this planned probe.
