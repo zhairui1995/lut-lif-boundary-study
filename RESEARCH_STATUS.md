@@ -1,6 +1,7 @@
 # Research Status
 
-Status: `CONDITIONAL_PASS_LOCAL_PACKAGE`.
+Status: `CONDITIONAL_PASS_LOCAL_PACKAGE` for the original boundary-study
+package; `PLANNED_PIVOT` for the QK-LUT-LIF Transformer architecture route.
 
 The current story is coherent if framed as a boundary study rather than a broad
 positive method paper:
@@ -48,3 +49,12 @@ Remaining blockers before any public release or submission:
 - final live portal and official-policy freshness check.
 
 No remote-server experiment is planned or run in this extraction step.
+
+## Architecture Pivot
+
+The next route reframes LUT-LIF as a proposed module inside a
+QK-LUT-LIF Transformer architecture. The first planned experiment is a
+restricted RL/bandit policy probe that selects `posthoc`, `quant`, or
+`CNL-LUT-LIF` per LIF group on QKFormer CIFAR-100 `T=4`, seed 42. A smoke pass
+checks execution only; full validation is required before any positive
+architecture claim.

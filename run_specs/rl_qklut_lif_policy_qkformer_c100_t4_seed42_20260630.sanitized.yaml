@@ -1,0 +1,77 @@
+schema_version: 1
+run_id: rl_qklut_lif_policy_qkformer_c100_t4_seed42_20260630
+status: planned
+owner: anonymous
+created_at: 2026-06-30
+
+question:
+  hypothesis: >
+    A restricted RL/bandit policy that selects the LUT-LIF replacement variant
+    per LIF group, using QK-LUT-inspired temporal/channel current normalization
+    as one action, can outperform fixed all-posthoc, all-quantized, and all-CNL
+    insertion policies on the retained QKFormer CIFAR-100 T=4 seed-42 setting.
+  strongest_alternative_explanation: >
+    The policy may overfit the small search subset or fail to beat the best
+    fixed policy on full validation.
+  claim_id_unlocked: planned_qklut_lif_architecture_policy_probe
+
+environment:
+  host: PLACEHOLDER_REMOTE_HOST
+  repo_root: PLACEHOLDER_REPO_ROOT
+  python: PLACEHOLDER_PYTHON
+  gpu_ids: [PLACEHOLDER_GPU]
+
+protocol:
+  dataset: CIFAR-100
+  data_root: PLACEHOLDER_CIFAR_DATA_ROOT
+  split: train calibration plus full validation for final full run
+  model: QKFormer CIFAR-100 T=4
+  checkpoint: PLACEHOLDER_QKFORMER_CIFAR100_T4_SEED42_CHECKPOINT
+  method: QK-LUT-LIF Transformer policy probe
+  controls:
+    - all-posthoc dense transition LUT
+    - all-quantized arithmetic LIF
+    - all-CNL-LUT-LIF with temporal/channel current normalization
+  seed: 42
+  command_or_server_script: scripts/server/run_rl_lut_lif_policy_probe_template.sh
+  fixed_budget:
+    smoke:
+      calibration_batches: 1
+      search_eval_batches: 1
+      final_eval_batches: 1
+    full:
+      calibration_batches: 128
+      search_eval_batches: 8
+      final_eval_batches: full validation
+    policy_rounds: 1
+  search_prohibited:
+    - bit_width_sweep
+    - seed_sweep
+    - checkpoint_sweep
+    - learning_rate_sweep
+    - backbone_search
+    - retry_until_positive
+
+metrics:
+  primary:
+    - paired Acc@1 drop versus teacher
+    - reward = -drop_top1 - 0.01 * logit_mse_per_sample
+  secondary:
+    - logit MSE per sample
+    - KL teacher-to-candidate per sample
+    - selected policy by target
+    - metadata bytes by action
+    - module execution coverage
+
+gates:
+  success:
+    - smoke must execute all selected replacement modules with finite reward
+    - full learned policy reward must exceed the best fixed-policy control reward
+    - full learned policy paired Acc@1 drop must be <= 1.50 percentage points
+  failure:
+    - any non-finite metric
+    - replacement module execution coverage below 100%
+    - learned policy fails to beat the best fixed-policy control in full mode
+  stop:
+    - do not launch full run if smoke is not SMOKE-PASS
+    - do not promote architecture claims from smoke subset metrics

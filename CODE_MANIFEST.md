@@ -17,6 +17,9 @@ run at `lut_if_paper/anonymous_artifact_dry_run_20260629`.
 - `results/`: compact metrics, summary tables, and paper-facing reports.
 - `figures/`: evidence-flow figure source and rendered outputs.
 - `scripts/`: smoke/full command templates using environment variables.
+- `docs/qklut_lif_architecture_pivot_20260630.md`: planned architecture pivot
+  from boundary study to QK-LUT-LIF Transformer; no positive result is claimed
+  by this planning note.
 - `paper/`: anonymous manuscript PDF and reproducibility checklist draft.
 
 ## Excluded
@@ -35,5 +38,8 @@ The copied files support a paper about controlled LUT replacement of LIF
 neurons in QKFormer. They do not support claims about measured latency, energy,
 area, SRAM, production acceleration, broad cross-architecture generalization,
 seed stability, or bit-width robustness beyond the registered 8-bit diagnostic.
+
+The added RL-guided policy probe supports only a planned experiment until full
+validation metrics are generated and audited.
 
 No GitHub remote is configured in this local repository.
