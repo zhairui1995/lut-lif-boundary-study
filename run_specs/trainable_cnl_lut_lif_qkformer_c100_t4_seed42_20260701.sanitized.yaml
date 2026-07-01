@@ -1,0 +1,84 @@
+schema_version: 1
+run_id: trainable_cnl_lut_lif_qkformer_c100_t4_seed42_20260701
+status: planned
+owner: anonymous
+created_at: 2026-07-01
+
+question:
+  hypothesis: >
+    A trainable CNL-LUT-LIF module, initialized from QK-LUT-inspired
+    temporal/channel current normalization and trained with a frozen QKFormer
+    backbone, can improve over the fixed all-CNL-LUT-LIF control on the
+    retained CIFAR-100 T=4 seed-42 setting.
+  strongest_alternative_explanation: >
+    CNL is only useful as a fixed calibration transform; making the transition
+    table and CNL affine parameters trainable may overfit or degrade hard
+    address evaluation.
+  claim_id_unlocked: planned_trainable_qklut_lif_module_probe
+
+environment:
+  host: PLACEHOLDER_REMOTE_HOST
+  repo_root: PLACEHOLDER_REPO_ROOT
+  python: PLACEHOLDER_PYTHON
+  gpu_ids: [PLACEHOLDER_GPU]
+
+protocol:
+  dataset: CIFAR-100
+  data_root: PLACEHOLDER_CIFAR_DATA_ROOT
+  split: train calibration/training plus complete validation for full run
+  model: QKFormer CIFAR-100 T=4
+  checkpoint: PLACEHOLDER_QKFORMER_CIFAR100_T4_SEED42_CHECKPOINT
+  method: trainable dense CNL-LUT-LIF with frozen backbone
+  controls:
+    - original frozen LIF teacher
+    - posthoc dense transition LUT
+    - quantized arithmetic LIF
+    - fixed all-CNL-LUT-LIF
+    - trainable CNL-LUT-LIF initialization
+  seed: 42
+  command_or_server_script: scripts/server/run_trainable_cnl_lut_lif_probe_template.sh
+  fixed_budget:
+    smoke:
+      calibration_batches: 1
+      epochs: 1
+      train_batches_per_epoch: 1
+      eval_batches: 1
+    full:
+      calibration_batches: 32
+      epochs: 3
+      train_batches_per_epoch: 128
+      evaluation_samples: 10000
+  search_prohibited:
+    - learning_rate_sweep
+    - bit_width_sweep
+    - seed_sweep
+    - checkpoint_sweep
+    - stage_sweep
+    - retry_until_positive
+
+metrics:
+  primary:
+    - full_validation_Acc_at_1
+    - paired_Acc_at_1_drop
+    - paired_logit_MSE_per_sample
+  secondary:
+    - teacher_to_candidate_KL_per_sample
+    - validation_cross_entropy
+    - table_delta_rms
+    - norm_affine_delta
+    - metadata_bytes
+
+gates:
+  success:
+    - smoke must execute all requested replacement modules and complete one backward update
+    - full trainable CNL-LUT-LIF must beat fixed all-CNL-LUT-LIF on Acc@1 or logit MSE
+    - full trainable CNL-LUT-LIF paired Acc@1 drop must be < fixed all-CNL-LUT-LIF drop
+    - full paired Acc@1 drop must be <= 1.25 percentage points
+  failure:
+    - non-finite loss or metric
+    - requested LIF target not executed
+    - no improvement over fixed all-CNL-LUT-LIF
+    - paired full-validation drop > 1.25 percentage points
+  stop:
+    - do not launch full if smoke is not SMOKE-PASS
+    - stop after the registered full run; no hidden hyperparameter search

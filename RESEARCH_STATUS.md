@@ -61,3 +61,7 @@ Result: `NO-GO`. The learned policy reached `79.56%` Acc@1 and did not beat
 the fixed all-CNL-LUT-LIF full-control row at `79.77%`. This blocks the simple
 selector-style RL route. The next credible route must change the trainable
 module or objective rather than only selecting among fixed replacements.
+
+The next planned run is `TrainableCNL-LUT-LIF`: keep the QK-LUT-inspired CNL
+normalization but make the dense transition table, threshold, and optional
+temporal/channel affine correction trainable under a frozen backbone.

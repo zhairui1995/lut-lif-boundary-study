@@ -42,4 +42,8 @@ seed stability, or bit-width robustness beyond the registered 8-bit diagnostic.
 The added RL-guided policy probe now has a compact `NO-GO` result in
 `results/rl_qklut_lif_policy_c100_t4_report.md`.
 
+`tools/trainable_cnl_lut_lif_probe.py` adds the next planned architecture
+probe: a trainable dense LUT-LIF transition module initialized with CNL current
+normalization.
+
 No GitHub remote is configured in this local repository.
