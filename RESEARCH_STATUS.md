@@ -62,6 +62,11 @@ the fixed all-CNL-LUT-LIF full-control row at `79.77%`. This blocks the simple
 selector-style RL route. The next credible route must change the trainable
 module or objective rather than only selecting among fixed replacements.
 
-The next planned run is `TrainableCNL-LUT-LIF`: keep the QK-LUT-inspired CNL
-normalization but make the dense transition table, threshold, and optional
-temporal/channel affine correction trainable under a frozen backbone.
+The follow-up `TrainableCNL-LUT-LIF` run is also `NO-GO`: keeping the
+QK-LUT-inspired CNL normalization while making the dense transition table,
+threshold, and temporal/channel affine correction trainable under a frozen
+backbone degraded full-validation performance relative to fixed CNL.
+
+Current route implication: the next architecture attempt should use a smaller
+structured residual or from-start network training, not dense post-hoc table
+training.

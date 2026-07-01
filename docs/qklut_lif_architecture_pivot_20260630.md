@@ -41,8 +41,8 @@ See `lut_if_paper/rl_qklut_lif_policy_result_20260701.md`.
 
 1. QKFormer CIFAR-100 `T=4`, seed 42, smoke policy probe. `DONE`.
 2. QKFormer CIFAR-100 `T=4`, seed 42, full policy probe. `NO-GO`.
-3. Trainable QK-LUT-LIF module: modify the module or training objective rather
-   than selecting among fixed replacement variants. `NEXT`.
+3. Trainable dense CNL-LUT-LIF module: modify the module or training objective
+   rather than selecting among fixed replacement variants. `NO-GO`.
 4. Cross-architecture smoke using existing Spikformer support if compatible.
 5. LL-ViT adaptation only after locating a runnable implementation and mapping
    its LUT-based channel-mixer interface to this paper's SNN/LUT-LIF setting.
@@ -68,3 +68,20 @@ Current disallowed claim:
 - RL/bandit selection over fixed post-hoc, quantized, and CNL replacement
   variants improves the QKFormer setting. The completed full run contradicts
   this claim.
+- CNL initialization plus dense trainable transition tables is sufficient to
+  rescue LUT-LIF training. The completed full run contradicts this claim; see
+  `lut_if_paper/trainable_cnl_lut_lif_result_20260701.md`.
+
+## Updated Route Decision
+
+The evidence now rejects both cheap architecture pivots:
+
+1. choosing among fixed replacement variants by a restricted policy;
+2. training dense CNL-initialized transition tables after freezing the backbone.
+
+The next architecture attempt should change the parameterization, not the
+selection rule. The most defensible next step is a structured residual module:
+a small per-layer or per-channel correction on top of fixed CNL-LUT-LIF,
+regularized to preserve hard-address behavior, or a from-start network
+training run where QK-LUT-LIF is part of the model rather than a post-hoc
+replacement.
