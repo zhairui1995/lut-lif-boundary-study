@@ -1,0 +1,103 @@
+schema_version: 1
+run_id: lut_if_e1_c100_t4_seed42_20260626
+status: completed_no_go
+owner: anonymous_authors
+created_at: 2026-06-26
+completed_at: 2026-06-27
+
+question:
+  hypothesis: >-
+    A trainable dense LUT-IF transition table can improve over a post-hoc dense
+    transition LUT and a matched quantized arithmetic LIF under the fixed
+    QKFormer CIFAR-100 T=4 seed-42 all-LIF replacement protocol.
+  strongest_alternative_explanation: >-
+    Training the dense transition table and threshold under this objective does
+    not improve the recurrent interface and may increase mismatch relative to
+    simpler matched controls.
+
+environment:
+  host: anonymous_gpu_node
+  repo_root: ${REPO_ROOT}
+  code_sync: anonymous_public_sync_branch
+  conda_environment: sdr_or_equivalent
+  python: ${PYTHON}
+
+protocol:
+  family: cifar100
+  num_classes: 100
+  time_step: 4
+  checkpoint: ${CHECKPOINT_DIR}/qkformer_cifar100_t4_seed42_model_best.pth.tar
+  data_dir: ${DATA_DIR}
+  seed: 42
+  calibration_batches: 32
+  max_train_batches_per_epoch: 128
+  epochs: 3
+  evaluation_samples: full_validation_10000
+  batch_size: 32
+  workers: 4
+  state_bits: 6
+  input_bits: 6
+  targets: all_discovered_MultiStepLIFNode_targets
+  frozen_backbone: true
+  trainable_parameters:
+    - LUT_IF_transition_values
+    - thresholds
+  no_search:
+    - no_learning_rate_sweep
+    - no_bit_width_sweep
+    - no_checkpoint_sweep
+    - no_seed_sweep
+    - no_validation_checkpoint_selection
+
+controls:
+  - original_frozen_LIF_teacher
+  - posthoc_dense_transition_LUT_6bit
+  - quantized_arithmetic_LIF_6bit
+  - trainable_LUT_IF_initialization
+  - trained_dense_LUT_IF
+
+metrics:
+  primary:
+    - full_validation_Acc_at_1
+    - paired_Acc_at_1_drop
+    - paired_logit_MSE_per_sample
+    - KL_teacher_to_candidate_per_sample
+  diagnostics:
+    - table_storage
+    - executed_targets
+    - nonfinite_loss_check
+
+gates:
+  success:
+    - trained_dense_LUT_IF_beats_posthoc_dense_LUT_on_acc_or_logit_mse
+    - trained_dense_LUT_IF_beats_quantized_arithmetic_LIF_on_acc_or_logit_mse
+    - trained_dense_LUT_IF_drop_le_1_00_pp
+    - no_nonfinite_loss
+    - all_requested_targets_execute
+
+result:
+  gate: NO-GO
+  teacher_acc1: 81.02
+  posthoc_dense_lut_acc1: 78.96
+  quantized_arithmetic_lif_acc1: 78.90
+  lut_if_initialization_acc1: 78.77
+  trained_dense_lut_if_acc1: 78.42
+  trained_dense_lut_if_drop_pp: 2.60
+  trained_dense_lut_if_logit_mse_per_sample: 56.616155
+  all_requested_targets_executed: true
+  expected_targets: 35
+
+claim_boundary:
+  can_claim:
+    - initial_dense_trainable_lut_if_objective_failed_against_matched_controls
+  cannot_claim:
+    - all_possible_lut_neuron_designs_fail
+    - hardware_speed_or_energy_benefit
+    - compact_factorization_success
+    - broad_transfer
+
+artifacts:
+  compact_metrics: results/lut_if_poc_c100_t4_metrics_compact.json
+  summary_csv: results/lut_if_poc_c100_t4_summary.csv
+  training_log: results/lut_if_poc_c100_t4_training_log.csv
+  report: results/lut_if_poc_c100_t4_report.md

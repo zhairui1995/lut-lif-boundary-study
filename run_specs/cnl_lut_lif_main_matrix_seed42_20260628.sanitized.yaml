@@ -1,0 +1,169 @@
+schema_version: 1
+run_id: cnl_lut_lif_main_matrix_seed42_20260628
+status: completed_mixed_no_go_for_broad_matrix_claim
+owner: anonymous_authors
+created_at: 2026-06-28
+completed_at: 2026-06-28
+
+question:
+  hypothesis: >-
+    Across retained QKFormer CIFAR-10/CIFAR-100 seed-42 checkpoints at T=1 and
+    T=4, current-normalized LUT-LIF improves the all-LIF replacement tradeoff
+    over a same-precision post-hoc dense transition LUT or a matched quantized
+    arithmetic LIF, without changing bit-width, seed, checkpoint, stage, or
+    training schedule.
+  strongest_alternative_explanation: >-
+    The improvement is setting-specific, or temporal/channel current
+    normalization improves a local current diagnostic without improving the
+    paired network-level replacement.
+  claim_id_unlocked: CNL-LUT-LIF-H2-MAIN-COMPARISON-MATRIX
+
+environment:
+  host: anonymous_gpu_node
+  repo_root: ${REPO_ROOT}
+  code_sync: anonymous_public_sync_branch
+  git_commit_or_snapshot: 959782f
+  conda_environment: sdr_or_equivalent
+  python: ${PYTHON}
+  gpu_count: 1_per_run
+
+protocol:
+  seed: 42
+  calibration_batches: 128
+  evaluation_samples: full_validation
+  batch_size: 32
+  workers: 4
+  state_bits: 6
+  input_bits: 6
+  targets: all_discovered_MultiStepLIFNode_targets
+  no_search:
+    - no_learning_rate_sweep
+    - no_bit_width_sweep
+    - no_checkpoint_sweep
+    - no_stage_sweep
+    - no_seed_sweep
+    - no_validation_checkpoint_selection
+
+runs:
+  - run_key: c100_t1_seed42
+    family: cifar100
+    num_classes: 100
+    time_step: 1
+    checkpoint: ${CHECKPOINT_DIR}/qkformer_cifar100_t1_seed42_model_best.pth.tar
+    drop_threshold_pp: 2.06
+  - run_key: c100_t4_seed42
+    family: cifar100
+    num_classes: 100
+    time_step: 4
+    checkpoint: ${CHECKPOINT_DIR}/qkformer_cifar100_t4_seed42_model_best.pth.tar
+    drop_threshold_pp: 2.06
+    include_failed_dense_e1_boundary: true
+  - run_key: c10_t1_seed42
+    family: cifar10
+    num_classes: 10
+    time_step: 1
+    checkpoint: ${CHECKPOINT_DIR}/qkformer_cifar10_t1_seed42_model_best.pth.tar
+    drop_threshold_pp: 1.00
+  - run_key: c10_t4_seed42
+    family: cifar10
+    num_classes: 10
+    time_step: 4
+    checkpoint: ${CHECKPOINT_DIR}/qkformer_cifar10_t4_seed42_model_best.pth.tar
+    drop_threshold_pp: 1.00
+
+controls_per_run:
+  - original_frozen_LIF_teacher
+  - posthoc_dense_transition_LUT_6bit
+  - quantized_arithmetic_LIF_6bit
+  - CNL_LUT_LIF_without_temporal_channel_normalization
+  - CNL_LUT_LIF_with_temporal_channel_normalization
+
+metrics:
+  primary:
+    - full_validation_Acc_at_1
+    - paired_Acc_at_1_drop
+    - paired_logit_MSE_per_sample
+  diagnostics:
+    - current_MSE_before_normalization
+    - current_MSE_after_normalization
+    - normalization_clip_rate
+    - aggregate_transition_clip_rate
+    - executed_targets
+    - metadata_inclusive_bytes
+
+gates:
+  per_run_success:
+    - all_requested_targets_executed
+    - CNL_LUT_LIF_with_normalization_improves_over_posthoc_dense_LUT_on_Acc_drop_or_logit_MSE
+    - CNL_LUT_LIF_with_normalization_drop_below_same_run_posthoc_drop
+    - current_MSE_after_normalization_lt_no_normalization_current_MSE
+    - paired_drop_below_run_threshold
+  matrix_success:
+    - at_least_three_of_four_runs_pass_per_run_success
+    - no_run_has_nonfinite_or_missing_metrics
+    - every_run_executes_all_discovered_LIF_targets
+
+result:
+  matrix_verdict: NO-GO_FOR_BROAD_MAIN_MATRIX
+  per_run_gates_passed: 1
+  per_run_gates_total: 4
+  rows:
+    c100_t1:
+      teacher_top1: 77.58
+      posthoc_dense_lut_top1: 70.79
+      posthoc_dense_lut_drop_pp: 6.79
+      quantized_lif_top1: 70.87
+      quantized_lif_drop_pp: 6.71
+      cnl_no_norm_top1: 70.79
+      cnl_no_norm_drop_pp: 6.79
+      cnl_norm_top1: 70.79
+      cnl_norm_drop_pp: 6.79
+      gate: NO-GO
+    c100_t4:
+      teacher_top1: 81.02
+      posthoc_dense_lut_top1: 79.55
+      posthoc_dense_lut_drop_pp: 1.47
+      quantized_lif_top1: 79.61
+      quantized_lif_drop_pp: 1.41
+      cnl_no_norm_top1: 79.55
+      cnl_no_norm_drop_pp: 1.47
+      cnl_norm_top1: 79.77
+      cnl_norm_drop_pp: 1.25
+      gate: GO
+    c10_t1:
+      teacher_top1: 94.90
+      posthoc_dense_lut_top1: 94.53
+      posthoc_dense_lut_drop_pp: 0.37
+      quantized_lif_top1: 94.43
+      quantized_lif_drop_pp: 0.47
+      cnl_no_norm_top1: 94.53
+      cnl_no_norm_drop_pp: 0.37
+      cnl_norm_top1: 94.53
+      cnl_norm_drop_pp: 0.37
+      gate: NO-GO
+    c10_t4:
+      teacher_top1: 95.73
+      posthoc_dense_lut_top1: 95.64
+      posthoc_dense_lut_drop_pp: 0.09
+      quantized_lif_top1: 95.54
+      quantized_lif_drop_pp: 0.19
+      cnl_no_norm_top1: 95.64
+      cnl_no_norm_drop_pp: 0.09
+      cnl_norm_top1: 95.64
+      cnl_norm_drop_pp: 0.09
+      gate: NO-GO
+
+claim_boundary:
+  can_claim:
+    - setting_specific_cifar100_t4_repair
+    - current_mse_improves_under_fixed_protocol
+    - main_matrix_rejects_broad_superiority
+  cannot_claim:
+    - hardware_latency_energy_or_sram_benefit
+    - broad_architecture_generalization
+    - seed_stability_beyond_seed42
+    - bit_width_robustness
+
+artifacts:
+  aggregate_table: results/summary_matrix.csv
+  aggregate_report: results/main_matrix_report.md

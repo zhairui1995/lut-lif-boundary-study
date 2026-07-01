@@ -1,0 +1,160 @@
+{
+  "diagnostics": {
+    "no_normalization": {
+      "current_mse_after_normalization": 0.0009421778992879549,
+      "current_mse_before_normalization": 0.0009421778992879549,
+      "normalization_clip_rate": 4.220235522904062e-11
+    },
+    "with_normalization": {
+      "current_mse_after_normalization": 0.0009296279493267774,
+      "current_mse_before_normalization": 0.0009421778992879549,
+      "normalization_clip_rate": 1.2660706568712187e-10
+    }
+  },
+  "experiment": "cnl_lut_lif_main_cifar100_t1_seed42",
+  "gate": {
+    "all_requested_targets_executed": true,
+    "beats_posthoc_on_top1_or_logit_mse": false,
+    "current_mse_improves_over_no_norm": true,
+    "drop_below_external_threshold": true,
+    "drop_below_same_run_posthoc": false,
+    "drop_threshold": 4.79,
+    "expected_targets": 35,
+    "formal_full_gate_pass": false,
+    "pass": false,
+    "smoke_mode": false,
+    "verdict": "NO-GO"
+  },
+  "privacy_note": "Raw checkpoint/data paths and per-module verbose metadata are removed from this artifact copy.",
+  "protocol": {
+    "calibration_batches": 128,
+    "checkpoint": "${CHECKPOINT_DIR}/qkformer_cifar100_t1_seed42_model_best.pth.tar",
+    "data_dir": "${DATA_DIR}",
+    "family": "cifar100",
+    "input_bits": 8,
+    "max_eval_batches": null,
+    "moment_batches": 128,
+    "num_classes": 100,
+    "range_adjustment_count": 33,
+    "seed": 42,
+    "state_bits": 8,
+    "time_step": 1
+  },
+  "results": {
+    "CNL_LUT_LIF_with_normalization": {
+      "candidate_ce": 1.0384568719863891,
+      "candidate_top1": 77.12,
+      "drop_top1": 0.46,
+      "kl_teacher_to_candidate_per_sample": 0.20174100193977357,
+      "logit_mse_per_sample": 21.195259588623045,
+      "samples": 10000,
+      "teacher_top1": 77.58
+    },
+    "CNL_LUT_LIF_without_normalization": {
+      "candidate_ce": 1.0384568719863891,
+      "candidate_top1": 77.12,
+      "drop_top1": 0.46,
+      "kl_teacher_to_candidate_per_sample": 0.20174100193977357,
+      "logit_mse_per_sample": 21.195259588623045,
+      "samples": 10000,
+      "teacher_top1": 77.58
+    },
+    "posthoc_dense_transition_LUT_6bit": {
+      "candidate_ce": 1.0384568719863891,
+      "candidate_top1": 77.12,
+      "drop_top1": 0.46,
+      "kl_teacher_to_candidate_per_sample": 0.20174100193977357,
+      "logit_mse_per_sample": 21.195259588623045,
+      "samples": 10000,
+      "teacher_top1": 77.58
+    },
+    "quantized_arithmetic_LIF_6bit": {
+      "candidate_ce": 1.0383374431610108,
+      "candidate_top1": 77.07,
+      "drop_top1": 0.51,
+      "kl_teacher_to_candidate_per_sample": 0.20234251346588134,
+      "logit_mse_per_sample": 21.22730449523926,
+      "samples": 10000,
+      "teacher_top1": 77.58
+    }
+  },
+  "schema_version": 1,
+  "source": "sanitized_compact_metrics_from_full_validation_run",
+  "status": "completed",
+  "storage_summary": {
+    "no_normalization": {
+      "aggregate_clip_rate": 6.330353284356093e-10,
+      "metadata_bytes": 18541568,
+      "metadata_kib": 18107.0,
+      "modules": 35,
+      "modules_executed": 35,
+      "table_entries": 4587520
+    },
+    "posthoc": {
+      "aggregate_clip_rate": 6.330353284356093e-10,
+      "modules": 35,
+      "modules_executed": 35,
+      "table_entries": 4587520,
+      "value_bytes_fp32": 18350080,
+      "value_kib_fp32": 17920.0
+    },
+    "quantized_arithmetic": {
+      "aggregate_clip_rate": 1.223868301642178e-09,
+      "metadata_bytes": 980,
+      "metadata_kib": 0.95703125,
+      "modules": 35,
+      "modules_executed": 35,
+      "table_entries": 0
+    },
+    "with_normalization": {
+      "aggregate_clip_rate": 6.330353284356093e-10,
+      "metadata_bytes": 18541568,
+      "metadata_kib": 18107.0,
+      "modules": 35,
+      "modules_executed": 35,
+      "table_entries": 4587520
+    }
+  },
+  "summary_rows": [
+    {
+      "candidate_ce": 1.0384568719863891,
+      "candidate_top1": 77.12,
+      "drop_top1": 0.46,
+      "kl_teacher_to_candidate_per_sample": 0.20174100193977357,
+      "logit_mse_per_sample": 21.195259588623045,
+      "method": "posthoc_dense_transition_LUT_6bit",
+      "samples": 10000,
+      "teacher_top1": 77.58
+    },
+    {
+      "candidate_ce": 1.0383374431610108,
+      "candidate_top1": 77.07,
+      "drop_top1": 0.51,
+      "kl_teacher_to_candidate_per_sample": 0.20234251346588134,
+      "logit_mse_per_sample": 21.22730449523926,
+      "method": "quantized_arithmetic_LIF_6bit",
+      "samples": 10000,
+      "teacher_top1": 77.58
+    },
+    {
+      "candidate_ce": 1.0384568719863891,
+      "candidate_top1": 77.12,
+      "drop_top1": 0.46,
+      "kl_teacher_to_candidate_per_sample": 0.20174100193977357,
+      "logit_mse_per_sample": 21.195259588623045,
+      "method": "CNL_LUT_LIF_without_normalization",
+      "samples": 10000,
+      "teacher_top1": 77.58
+    },
+    {
+      "candidate_ce": 1.0384568719863891,
+      "candidate_top1": 77.12,
+      "drop_top1": 0.46,
+      "kl_teacher_to_candidate_per_sample": 0.20174100193977357,
+      "logit_mse_per_sample": 21.195259588623045,
+      "method": "CNL_LUT_LIF_with_normalization",
+      "samples": 10000,
+      "teacher_top1": 77.58
+    }
+  ]
+}

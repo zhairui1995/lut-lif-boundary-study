@@ -1,0 +1,149 @@
+schema_version: 1
+run_id: cnl_lut_lif_c100_t1_bit8_boundary_seed42_20260629
+status: completed_primary_diagnostic_go_secondary_cnl_no_go
+owner: anonymous_authors
+created_at: 2026-06-29
+completed_at: 2026-06-29
+
+question:
+  hypothesis: >-
+    The severe CIFAR-100 T=1 all-LIF replacement drop in the completed 6-bit
+    CNL-LUT-LIF matrix is primarily sensitive to fixed 6-bit state/input
+    transition precision or state-range discretization. Raising only the
+    transition precision to 8 bits under the same checkpoint, dataset,
+    calibration budget, targets, and validation protocol will materially reduce
+    the paired accuracy drop.
+  strongest_alternative_explanation: >-
+    The failure reflects a deeper recurrent-dynamics, current-lookup support,
+    reset, or spike-timing mismatch that persists even when transition
+    precision is raised to 8 bits.
+  claim_id_unlocked: CNL-LUT-LIF-H3-C100-T1-BITWIDTH-BOUNDARY-DIAGNOSTIC
+
+environment:
+  host: anonymous_gpu_node
+  repo_root: ${REPO_ROOT}
+  code_sync: anonymous_public_sync_branch
+  git_commit_or_snapshot: 959782f
+  conda_environment: sdr_or_equivalent
+  python: ${PYTHON}
+  gpu_count: 1
+
+protocol:
+  family: cifar100
+  num_classes: 100
+  time_step: 1
+  checkpoint: ${CHECKPOINT_DIR}/qkformer_cifar100_t1_seed42_model_best.pth.tar
+  data_dir: ${DATA_DIR}
+  seed: 42
+  calibration_batches: 128
+  evaluation_samples: full_validation_10000
+  batch_size: 32
+  workers: 4
+  state_bits: 8
+  input_bits: 8
+  range_margin: 0.05
+  targets: all_discovered_MultiStepLIFNode_targets
+  no_search:
+    - no_seed_sweep
+    - no_checkpoint_sweep
+    - no_dataset_sweep
+    - no_time_step_sweep
+    - no_bit_width_sweep
+    - no_calibration_budget_sweep
+    - no_learning_rate_sweep
+    - no_validation_checkpoint_selection
+
+fixed_prior_comparison:
+  completed_6bit_teacher_top1: 77.58
+  completed_6bit_posthoc_dense_lut_top1: 70.79
+  completed_6bit_posthoc_dense_lut_drop_pp: 6.79
+  completed_6bit_cnl_norm_top1: 70.79
+  completed_6bit_cnl_norm_drop_pp: 6.79
+  improvement_margin_pp: 2.00
+  primary_success_drop_threshold_pp: 4.79
+
+controls_per_run:
+  - original_frozen_LIF_teacher
+  - posthoc_dense_transition_LUT_8bit
+  - quantized_arithmetic_LIF_8bit
+  - CNL_LUT_LIF_without_temporal_channel_normalization_8bit
+  - CNL_LUT_LIF_with_temporal_channel_normalization_8bit
+
+metrics:
+  primary:
+    - full_validation_Acc_at_1
+    - paired_Acc_at_1_drop
+    - paired_logit_MSE_per_sample
+  diagnostics:
+    - current_MSE_before_normalization
+    - current_MSE_after_normalization
+    - normalization_clip_rate
+    - aggregate_transition_clip_rate
+    - executed_targets
+    - metadata_inclusive_bytes
+    - nonfinite_metric_check
+
+gates:
+  smoke_success:
+    - command_exits_zero
+    - all_requested_targets_execute
+    - metrics_json_written
+    - no_nonfinite_metrics
+  primary_diagnostic_success:
+    - full_validation_completes
+    - all_requested_targets_execute
+    - no_nonfinite_metrics
+    - either_8bit_posthoc_or_8bit_cnl_normalized_drop_pp_le_4_79
+  secondary_cnl_success:
+    - 8bit_cnl_normalized_improves_over_same_run_8bit_posthoc
+    - 8bit_cnl_normalized_drop_is_lower_than_same_run_8bit_posthoc
+
+result:
+  primary_diagnostic_gate: GO
+  secondary_cnl_method_gate: NO-GO
+  all_requested_targets_executed: true
+  expected_targets: 35
+  nonfinite_metrics: false
+  teacher_top1: 77.58
+  rows:
+    posthoc_dense_transition_lut_8bit:
+      top1: 77.12
+      drop_pp: 0.46
+      logit_mse_per_sample: 21.195259588623045
+    quantized_arithmetic_lif_8bit:
+      top1: 77.07
+      drop_pp: 0.51
+      logit_mse_per_sample: 21.22730449523926
+    cnl_lut_lif_without_normalization_8bit:
+      top1: 77.12
+      drop_pp: 0.46
+      logit_mse_per_sample: 21.195259588623045
+    cnl_lut_lif_with_normalization_8bit:
+      top1: 77.12
+      drop_pp: 0.46
+      logit_mse_per_sample: 21.195259588623045
+  diagnostics:
+    current_mse_before_normalization: 0.0009421778992879549
+    current_mse_after_normalization: 0.0009296279493267774
+    aggregate_transition_clip_rate: 6.330353284356093e-10
+    posthoc_table_entries: 4587520
+    posthoc_value_kib_fp32: 17920.0
+    cnl_metadata_kib: 18107.0
+
+claim_boundary:
+  can_claim_if_primary_diagnostic_success:
+    - c100_t1_seed42_6bit_failure_is_transition_precision_or_state_range_sensitive
+    - c100_t1_row_is_an_interpretable_precision_boundary_diagnostic
+  can_claim_if_secondary_cnl_success: []
+  cannot_claim:
+    - hardware_latency_energy_area_or_sram_benefit
+    - broad_cnl_lut_lif_superiority
+    - cross_architecture_generality
+    - seed_stability_beyond_seed42
+    - bit_width_robustness_beyond_this_single_8bit_diagnostic
+    - optimal_bit_width_or_monotonic_bit_width_scaling
+
+artifacts:
+  compact_metrics: results/c100_t1_8bit_boundary_metrics_compact.json
+  summary_csv: results/c100_t1_8bit_boundary_summary.csv
+  report: results/c100_t1_8bit_boundary_report.md

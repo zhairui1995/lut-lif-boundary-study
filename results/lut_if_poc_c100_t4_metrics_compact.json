@@ -1,0 +1,790 @@
+{
+  "baseline": {
+    "lut_if_initial": {
+      "candidate_ce": 1.1003175825119018,
+      "candidate_top1": 78.77,
+      "drop_top1": 2.25,
+      "kl_teacher_to_candidate_per_sample": 0.16619244616031648,
+      "logit_mse_per_sample": 24.547121990966797,
+      "samples": 10000,
+      "teacher_top1": 81.02
+    },
+    "posthoc": {
+      "candidate_ce": 1.1012520071029663,
+      "candidate_top1": 78.96,
+      "drop_top1": 2.06,
+      "kl_teacher_to_candidate_per_sample": 0.1663160291671753,
+      "logit_mse_per_sample": 24.577839208984376,
+      "samples": 10000,
+      "teacher_top1": 81.02
+    },
+    "quantized_arithmetic": {
+      "candidate_ce": 1.1026695377349853,
+      "candidate_top1": 78.9,
+      "drop_top1": 2.12,
+      "kl_teacher_to_candidate_per_sample": 0.1660740522146225,
+      "logit_mse_per_sample": 24.559827560424804,
+      "samples": 10000,
+      "teacher_top1": 81.02
+    }
+  },
+  "claim_boundary": "Initial matched-precision LUT-IF proof of concept only. No compactness, generality, or hardware claim is unlocked.",
+  "experiment": "lut_if_initial_poc",
+  "final": {
+    "candidate_ce": 0.9660563277244568,
+    "candidate_top1": 78.42,
+    "drop_top1": 2.6,
+    "kl_teacher_to_candidate_per_sample": 0.21609001514911652,
+    "logit_mse_per_sample": 56.616154718017576,
+    "samples": 10000,
+    "teacher_top1": 81.02
+  },
+  "gate": {
+    "all_requested_targets_executed": true,
+    "beats_posthoc_on_top1_or_logit_mse": false,
+    "beats_quantized_arithmetic_on_top1_or_logit_mse": false,
+    "drop_within_initial_gate": false,
+    "expected_targets": 35,
+    "formal_full_gate_pass": false,
+    "max_drop": 1.0,
+    "pass": false,
+    "smoke_mode": false,
+    "smoke_pass": true,
+    "verdict": "NO-GO"
+  },
+  "privacy_note": "Raw checkpoint/data paths are replaced by placeholder environment variables.",
+  "protocol": {
+    "calibration_batches": 32,
+    "checkpoint": "${CHECKPOINT_DIR}/qkformer_cifar100_t4_seed42_model_best.pth.tar",
+    "data_dir": "${DATA_DIR}",
+    "epochs": 3,
+    "input_bits": 6,
+    "max_eval_batches": null,
+    "max_train_batches": 128,
+    "range_adjustment_count": 2,
+    "seed": 42,
+    "state_bits": 6,
+    "time_step": 4
+  },
+  "schema_version": 1,
+  "source": "sanitized_compact_metrics_from_full_validation_run",
+  "status": "completed",
+  "storage_summary": {
+    "lut_if": {
+      "aggregate_clip_rate": 0.00145152287198844,
+      "metadata_bytes": 574420,
+      "metadata_kib": 560.95703125,
+      "modules": 35,
+      "modules_executed": 35,
+      "per_module": {
+        "patch_embed1.proj1_lif": {
+          "clip_rate": 9.628626505533854e-05,
+          "executions": 313.0,
+          "hard_soft_mse": 0.007317463589459658,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.007229608483612537,
+          "table_entries": 4096.0,
+          "threshold": 1.0056909322738647
+        },
+        "patch_embed1.proj_lif": {
+          "clip_rate": 1.2003580729166666e-07,
+          "executions": 313.0,
+          "hard_soft_mse": 0.025614959249893824,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.0034080466721206903,
+          "table_entries": 4096.0,
+          "threshold": 0.9865362644195557
+        },
+        "patch_embed1.proj_res_lif": {
+          "clip_rate": 7.62939453125e-10,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0023660058570404846,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.009451040998101234,
+          "table_entries": 4096.0,
+          "threshold": 0.9942992925643921
+        },
+        "patch_embed2.proj3_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.006556382327775161,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.009789464063942432,
+          "table_entries": 4096.0,
+          "threshold": 1.0043623447418213
+        },
+        "patch_embed2.proj4_lif": {
+          "clip_rate": 2.6957194010416666e-08,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0032464828508595627,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.0092927236109972,
+          "table_entries": 4096.0,
+          "threshold": 1.0181738138198853
+        },
+        "patch_embed2.proj_res_lif": {
+          "clip_rate": 2.0345052083333334e-09,
+          "executions": 313.0,
+          "hard_soft_mse": 0.003010531210154295,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.010452527552843094,
+          "table_entries": 4096.0,
+          "threshold": 1.025172472000122
+        },
+        "patch_embed3.proj3_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.005756922971953948,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.010504540987312794,
+          "table_entries": 4096.0,
+          "threshold": 1.0115504264831543
+        },
+        "patch_embed3.proj4_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0058489844585458434,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.012304403819143772,
+          "table_entries": 4096.0,
+          "threshold": 0.9807751774787903
+        },
+        "patch_embed3.proj_res_lif": {
+          "clip_rate": 1.4668782552083334e-06,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0012740884515146415,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.011670172214508057,
+          "table_entries": 4096.0,
+          "threshold": 0.9636240601539612
+        },
+        "stage1.0.mlp.mlp1_lif": {
+          "clip_rate": 3.178914388020833e-10,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0030824508332957822,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.007161796558648348,
+          "table_entries": 4096.0,
+          "threshold": 0.9724324941635132
+        },
+        "stage1.0.mlp.mlp2_lif": {
+          "clip_rate": 1.2715657552083333e-09,
+          "executions": 313.0,
+          "hard_soft_mse": 0.004248720313732823,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.0077391332015395164,
+          "table_entries": 4096.0,
+          "threshold": 1.0262531042099
+        },
+        "stage1.0.tssa.attn_lif": {
+          "clip_rate": 0.29560744934082034,
+          "executions": 313.0,
+          "hard_soft_mse": 0.00042901868371991443,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.0039343880489468575,
+          "table_entries": 4096.0,
+          "threshold": 0.4700358808040619
+        },
+        "stage1.0.tssa.k_lif": {
+          "clip_rate": 1.0172526041666667e-09,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0025199055887758733,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.0060401055961847305,
+          "table_entries": 4096.0,
+          "threshold": 0.9776241779327393
+        },
+        "stage1.0.tssa.proj_lif": {
+          "clip_rate": 6.103515625e-09,
+          "executions": 313.0,
+          "hard_soft_mse": 0.004974025705456734,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.007688588462769985,
+          "table_entries": 4096.0,
+          "threshold": 1.0094839334487915
+        },
+        "stage1.0.tssa.q_lif": {
+          "clip_rate": 2.7974446614583333e-08,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0015625598646700383,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.00942626129835844,
+          "table_entries": 4096.0,
+          "threshold": 0.9764877557754517
+        },
+        "stage2.0.mlp.mlp1_lif": {
+          "clip_rate": 1.1838277180989583e-07,
+          "executions": 313.0,
+          "hard_soft_mse": 0.003462036604558428,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.006654621567577124,
+          "table_entries": 4096.0,
+          "threshold": 0.9747296571731567
+        },
+        "stage2.0.mlp.mlp2_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.01142363668034474,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.006981955841183662,
+          "table_entries": 4096.0,
+          "threshold": 1.045419454574585
+        },
+        "stage2.0.tssa.attn_lif": {
+          "clip_rate": 0.4923210205078125,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0018717035337351264,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.007643251214176416,
+          "table_entries": 4096.0,
+          "threshold": 0.47345274686813354
+        },
+        "stage2.0.tssa.k_lif": {
+          "clip_rate": 5.086263020833333e-09,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0022057177241891625,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.009447867050766945,
+          "table_entries": 4096.0,
+          "threshold": 0.9624751210212708
+        },
+        "stage2.0.tssa.proj_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.026091253049174944,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.006756875663995743,
+          "table_entries": 4096.0,
+          "threshold": 1.0607914924621582
+        },
+        "stage2.0.tssa.q_lif": {
+          "clip_rate": 1.0172526041666667e-09,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0015843263507510225,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.007904943078756332,
+          "table_entries": 4096.0,
+          "threshold": 0.9651462435722351
+        },
+        "stage3.0.mlp.mlp1_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.005728513443718354,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.013285653665661812,
+          "table_entries": 4096.0,
+          "threshold": 1.0568559169769287
+        },
+        "stage3.0.mlp.mlp2_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.019411952054997284,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.012792635709047318,
+          "table_entries": 4096.0,
+          "threshold": 0.9220441579818726
+        },
+        "stage3.0.ssa.attn_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.009555855764945349,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.009596173651516438,
+          "table_entries": 4096.0,
+          "threshold": 0.539920449256897
+        },
+        "stage3.0.ssa.k_lif": {
+          "clip_rate": 6.306966145833334e-08,
+          "executions": 313.0,
+          "hard_soft_mse": 0.006573655824363232,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.011010159738361835,
+          "table_entries": 4096.0,
+          "threshold": 1.0329577922821045
+        },
+        "stage3.0.ssa.proj_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0011714956522822224,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.019547665491700172,
+          "table_entries": 4096.0,
+          "threshold": 0.9549460411071777
+        },
+        "stage3.0.ssa.q_lif": {
+          "clip_rate": 1.1189778645833333e-08,
+          "executions": 313.0,
+          "hard_soft_mse": 0.009798080875724554,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.010618309490382671,
+          "table_entries": 4096.0,
+          "threshold": 1.041988730430603
+        },
+        "stage3.0.ssa.v_lif": {
+          "clip_rate": 2.0345052083333334e-09,
+          "executions": 313.0,
+          "hard_soft_mse": 0.006223247105876605,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.011364721693098545,
+          "table_entries": 4096.0,
+          "threshold": 1.0386080741882324
+        },
+        "stage3.1.mlp.mlp1_lif": {
+          "clip_rate": 3.178914388020833e-08,
+          "executions": 313.0,
+          "hard_soft_mse": 0.020798083152373633,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.02030137926340103,
+          "table_entries": 4096.0,
+          "threshold": 1.065067172050476
+        },
+        "stage3.1.mlp.mlp2_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0425317492266496,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.01828589104115963,
+          "table_entries": 4096.0,
+          "threshold": 0.9262033104896545
+        },
+        "stage3.1.ssa.attn_lif": {
+          "clip_rate": 1.0172526041666667e-09,
+          "executions": 313.0,
+          "hard_soft_mse": 0.0028728877945492664,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.017754314467310905,
+          "table_entries": 4096.0,
+          "threshold": 0.42674610018730164
+        },
+        "stage3.1.ssa.k_lif": {
+          "clip_rate": 5.086263020833333e-09,
+          "executions": 313.0,
+          "hard_soft_mse": 0.006001133115092913,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.015910228714346886,
+          "table_entries": 4096.0,
+          "threshold": 1.063726544380188
+        },
+        "stage3.1.ssa.proj_lif": {
+          "clip_rate": 1.6276041666666666e-07,
+          "executions": 313.0,
+          "hard_soft_mse": 0.005010892061664102,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.02630767971277237,
+          "table_entries": 4096.0,
+          "threshold": 0.9341075420379639
+        },
+        "stage3.1.ssa.q_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "hard_soft_mse": 0.007192630171775818,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.020151237025856972,
+          "table_entries": 4096.0,
+          "threshold": 1.0539931058883667
+        },
+        "stage3.1.ssa.v_lif": {
+          "clip_rate": 3.35693359375e-08,
+          "executions": 313.0,
+          "hard_soft_mse": 0.003543826224282384,
+          "metadata_bytes": 16412.0,
+          "table_delta_rms": 0.022432440891861916,
+          "table_entries": 4096.0,
+          "threshold": 1.036033034324646
+        }
+      },
+      "table_entries": 143360
+    },
+    "posthoc": {
+      "aggregate_clip_rate": 0.0005122946908171051,
+      "modules": 35,
+      "modules_executed": 35,
+      "per_module": {
+        "patch_embed1.proj1_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "patch_embed1.proj_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "patch_embed1.proj_res_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "patch_embed2.proj3_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "patch_embed2.proj4_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "patch_embed2.proj_res_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "patch_embed3.proj3_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "patch_embed3.proj4_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "patch_embed3.proj_res_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage1.0.mlp.mlp1_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage1.0.mlp.mlp2_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage1.0.tssa.attn_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage1.0.tssa.k_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage1.0.tssa.proj_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage1.0.tssa.q_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage2.0.mlp.mlp1_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage2.0.mlp.mlp2_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage2.0.tssa.attn_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage2.0.tssa.k_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage2.0.tssa.proj_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage2.0.tssa.q_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.0.mlp.mlp1_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.0.mlp.mlp2_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.0.ssa.attn_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.0.ssa.k_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.0.ssa.proj_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.0.ssa.q_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.0.ssa.v_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.1.mlp.mlp1_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.1.mlp.mlp2_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.1.ssa.attn_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.1.ssa.k_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.1.ssa.proj_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.1.ssa.q_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        },
+        "stage3.1.ssa.v_lif": {
+          "executions": 313,
+          "table_entries": 8192
+        }
+      },
+      "table_entries": 286720,
+      "value_bytes_fp32": 1146880,
+      "value_kib_fp32": 1120.0
+    },
+    "quantized_arithmetic": {
+      "aggregate_clip_rate": 0.0010245890545659572,
+      "metadata_bytes": 980,
+      "metadata_kib": 0.95703125,
+      "modules": 35,
+      "modules_executed": 35,
+      "per_module": {
+        "patch_embed1.proj1_lif": {
+          "clip_rate": 9.628626505533854e-05,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "patch_embed1.proj_lif": {
+          "clip_rate": 1.2003580729166666e-07,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "patch_embed1.proj_res_lif": {
+          "clip_rate": 7.62939453125e-10,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "patch_embed2.proj3_lif": {
+          "clip_rate": 1.2715657552083334e-10,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "patch_embed2.proj4_lif": {
+          "clip_rate": 2.5431315104166666e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "patch_embed2.proj_res_lif": {
+          "clip_rate": 6.103515625e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "patch_embed3.proj3_lif": {
+          "clip_rate": 3.5603841145833333e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "patch_embed3.proj4_lif": {
+          "clip_rate": 1.0172526041666667e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "patch_embed3.proj_res_lif": {
+          "clip_rate": 1.6428629557291667e-05,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage1.0.mlp.mlp1_lif": {
+          "clip_rate": 6.993611653645833e-10,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage1.0.mlp.mlp2_lif": {
+          "clip_rate": 2.543131510416667e-10,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage1.0.tssa.attn_lif": {
+          "clip_rate": 0.14945189208984375,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage1.0.tssa.k_lif": {
+          "clip_rate": 1.0172526041666667e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage1.0.tssa.proj_lif": {
+          "clip_rate": 4.323323567708334e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage1.0.tssa.q_lif": {
+          "clip_rate": 2.7974446614583333e-08,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage2.0.mlp.mlp1_lif": {
+          "clip_rate": 1.0443369547526041e-06,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage2.0.mlp.mlp2_lif": {
+          "clip_rate": 5.086263020833334e-10,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage2.0.tssa.attn_lif": {
+          "clip_rate": 0.5826955444335937,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage2.0.tssa.k_lif": {
+          "clip_rate": 6.612141927083333e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage2.0.tssa.proj_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage2.0.tssa.q_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.0.mlp.mlp1_lif": {
+          "clip_rate": 7.62939453125e-10,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.0.mlp.mlp2_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.0.ssa.attn_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.0.ssa.k_lif": {
+          "clip_rate": 3.153483072916667e-08,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.0.ssa.proj_lif": {
+          "clip_rate": 3.0517578125e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.0.ssa.q_lif": {
+          "clip_rate": 5.086263020833333e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.0.ssa.v_lif": {
+          "clip_rate": 2.0345052083333334e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.1.mlp.mlp1_lif": {
+          "clip_rate": 2.3091634114583334e-07,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.1.mlp.mlp2_lif": {
+          "clip_rate": 1.220703125e-07,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.1.ssa.attn_lif": {
+          "clip_rate": 4.069010416666667e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.1.ssa.k_lif": {
+          "clip_rate": 0.0,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.1.ssa.proj_lif": {
+          "clip_rate": 7.38525390625e-07,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.1.ssa.q_lif": {
+          "clip_rate": 1.0172526041666667e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        },
+        "stage3.1.ssa.v_lif": {
+          "clip_rate": 3.0517578125e-09,
+          "executions": 313.0,
+          "metadata_bytes": 28.0
+        }
+      },
+      "table_entries": 0
+    }
+  },
+  "training": [
+    {
+      "batches": 128,
+      "ce": 0.2517965715378523,
+      "delta_l2": 2.7448585618289334e-05,
+      "epoch": 1,
+      "kd": 0.05537800534511916,
+      "loss": 0.2794855752727017,
+      "neighbor_smoothness": 8.311893454848729e-06,
+      "samples": 4096,
+      "train_top1": 99.8779296875,
+      "val_candidate_ce": 0.9660563277244568,
+      "val_candidate_top1": 78.42,
+      "val_drop_top1": 2.6,
+      "val_kl_teacher_to_candidate_per_sample": 0.21609001514911652,
+      "val_logit_mse_per_sample": 56.616154718017576,
+      "val_samples": 10000,
+      "val_teacher_top1": 81.02
+    },
+    {
+      "batches": 128,
+      "ce": 0.16983823757618666,
+      "delta_l2": 0.00012267751003491867,
+      "epoch": 2,
+      "kd": 0.13747340301051736,
+      "loss": 0.23857495235279202,
+      "neighbor_smoothness": 3.9262891888824925e-05,
+      "samples": 4096,
+      "train_top1": 99.6826171875,
+      "val_candidate_ce": 1.0115272347450257,
+      "val_candidate_top1": 75.61,
+      "val_drop_top1": 5.41,
+      "val_kl_teacher_to_candidate_per_sample": 0.35046671500205995,
+      "val_logit_mse_per_sample": 110.98372360839844,
+      "val_samples": 10000,
+      "val_teacher_top1": 81.02
+    },
+    {
+      "batches": 128,
+      "ce": 0.13899900851538405,
+      "delta_l2": 0.0001538947594781348,
+      "epoch": 3,
+      "kd": 0.16732574731577188,
+      "loss": 0.22266189835499972,
+      "neighbor_smoothness": 6.159572495789689e-05,
+      "samples": 4096,
+      "train_top1": 99.6826171875,
+      "val_candidate_ce": 0.9194324640274047,
+      "val_candidate_top1": 77.94,
+      "val_drop_top1": 3.08,
+      "val_kl_teacher_to_candidate_per_sample": 0.2993700571537018,
+      "val_logit_mse_per_sample": 75.88722142333984,
+      "val_samples": 10000,
+      "val_teacher_top1": 81.02
+    }
+  ]
+}
