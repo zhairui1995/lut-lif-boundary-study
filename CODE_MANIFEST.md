@@ -39,7 +39,7 @@ neurons in QKFormer. They do not support claims about measured latency, energy,
 area, SRAM, production acceleration, broad cross-architecture generalization,
 seed stability, or bit-width robustness beyond the registered 8-bit diagnostic.
 
-The added RL-guided policy probe supports only a planned experiment until full
-validation metrics are generated and audited.
+The added RL-guided policy probe now has a compact `NO-GO` result in
+`results/rl_qklut_lif_policy_c100_t4_report.md`.
 
 No GitHub remote is configured in this local repository.

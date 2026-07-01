@@ -53,8 +53,11 @@ No remote-server experiment is planned or run in this extraction step.
 ## Architecture Pivot
 
 The next route reframes LUT-LIF as a proposed module inside a
-QK-LUT-LIF Transformer architecture. The first planned experiment is a
+QK-LUT-LIF Transformer architecture. The first completed experiment is a
 restricted RL/bandit policy probe that selects `posthoc`, `quant`, or
-`CNL-LUT-LIF` per LIF group on QKFormer CIFAR-100 `T=4`, seed 42. A smoke pass
-checks execution only; full validation is required before any positive
-architecture claim.
+`CNL-LUT-LIF` per LIF group on QKFormer CIFAR-100 `T=4`, seed 42.
+
+Result: `NO-GO`. The learned policy reached `79.56%` Acc@1 and did not beat
+the fixed all-CNL-LUT-LIF full-control row at `79.77%`. This blocks the simple
+selector-style RL route. The next credible route must change the trainable
+module or objective rather than only selecting among fixed replacements.
